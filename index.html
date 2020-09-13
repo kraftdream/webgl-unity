@@ -13,13 +13,37 @@
     </script>
   </head>
   <body>
-    <div class="webgl-content">
-      <div id="unityContainer" style="width: 960px; height: 600px"></div>
-      <div class="footer">
-        <div class="webgl-logo"></div>
-        <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
-        <div class="title">WebGLMobileGyroscope</div>
+      <div class="webgl-content">
+          <div id="unityContainer" style="width: 960px; height: 600px"></div>
+          <div class="footer">
+              <div class="webgl-logo"></div>
+              <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+              <div class="title">WebGLMobileGyroscope</div>
+          </div>
       </div>
-    </div>
+      <div id="container">
+          <div id="deviceType"></div>
+          <div style="text-align: center">
+              <button id="permission">Ask for permission</button>
+          </div>
+          <div id="permissionStatus">Pending</div>
+      </div>
   </body>
+  <script>if (typeof DeviceMotionEvent.requestPermission === 'function') {
+          document.getElementById('deviceType').innerText = 'iOS 13'
+          document.getElementById('permission').addEventListener('click', function () {
+              console.log('button clicked')
+              DeviceMotionEvent.requestPermission().then(response => {
+
+                  // This is showing "denied" without showing any permission popup
+                  console.log(response)
+                  document.getElementById('permissionStatus').innerText = response
+
+              }).catch(console.error)
+          });
+      } else {
+          // ignore this case for processing
+          console.log('non iOS 13')
+          document.getElementById('deviceType').innerText = 'non iOS 13'
+      }</script>
 </html>
